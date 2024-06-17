@@ -7,10 +7,12 @@ import {
 } from 'react-redux';
 
 import { constructorBurger } from './slices/BurgerSlice';
+import { user } from './slices/AuthSlice';
 
 const rootReducer = combineReducers({
   // Заменить на импорт настоящего редьюсера
-  burgerSlice: constructorBurger
+  burgerSlice: constructorBurger,
+  user: user
 });
 
 const store = configureStore({
