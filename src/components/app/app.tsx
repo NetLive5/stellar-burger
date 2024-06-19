@@ -6,7 +6,8 @@ import {
   Login,
   ResetPassword,
   Profile,
-  ProfileOrders
+  ProfileOrders,
+  ForgotPassword
 } from '@pages';
 import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import '../../index.css';
@@ -39,10 +40,12 @@ const RouteApp = () => {
         <Route path='/feed' element={<Feed />} />
         <Route path='/register' element={<Register />} />
         <Route path='/login' element={<Login />} />
-        <Route path='/forgot-password' element={<ResetPassword />} />
+        <Route path='/forgot-password' element={<ForgotPassword />} />
+        <Route path='/reset-password' element={<ResetPassword />} />
         <Route path='/profile' element={<Profile />} />
         <Route path='/profile/orders' element={<ProfileOrders />} />
         <Route path='/ingredients/:id' element={<IngredientDetails />} />
+        <Route path='/feed/:number' element={<OrderInfo />} />
         <Route path='*' element={<NotFound404 />} />
       </Routes>
 

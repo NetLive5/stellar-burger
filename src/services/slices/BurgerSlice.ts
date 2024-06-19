@@ -61,8 +61,10 @@ const constructorBurgerSlice = createSlice({
     },
     moveIngredientUp: (state, { payload }: PayloadAction<number>) => {
       const move = state.constructorItems.ingredients[payload - 1];
+
       state.constructorItems.ingredients[payload - 1] =
         state.constructorItems.ingredients[payload];
+      console.log(payload);
 
       state.constructorItems.ingredients[payload] = move;
     },
