@@ -27,7 +27,7 @@ export const getUserOrders = createAsyncThunk(
 );
 
 export const orderByNumber = createAsyncThunk(
-  'getOrderByNumberApi/getOrderByNumberApi',
+  'getOrderByNumber/getOrderByNumberApi',
   getOrderByNumberApi
 );
 
@@ -42,7 +42,8 @@ export const orderSlise = createSlice({
   selectors: {
     getOrder: (state) => state.order,
     getOrderData: (state) => state.data,
-    getRequest: (state) => state.request
+    getRequest: (state) => state.request,
+    getLoading: (state) => state.isLoading
   },
   extraReducers: (builder) => {
     builder.addCase(getUserOrders.fulfilled, (state, action) => {
@@ -82,4 +83,5 @@ export const orderSlise = createSlice({
 
 export const order = orderSlise.reducer;
 export const { clearOrder } = orderSlise.actions;
-export const { getOrder, getOrderData, getRequest } = orderSlise.selectors;
+export const { getOrder, getOrderData, getRequest, getLoading } =
+  orderSlise.selectors;

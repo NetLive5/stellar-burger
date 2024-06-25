@@ -5,7 +5,7 @@ import { getIngredientsApi } from '@api';
 
 export type TConstructorBurgerState = {
   ingredients: TIngredient[];
-  isLoading: Boolean;
+  isLoading: boolean;
   constructorItems: {
     bun: TConstructorIngredient | null;
     ingredients: TConstructorIngredient[];
@@ -64,7 +64,6 @@ const constructorBurgerSlice = createSlice({
 
       state.constructorItems.ingredients[payload - 1] =
         state.constructorItems.ingredients[payload];
-      console.log(payload);
 
       state.constructorItems.ingredients[payload] = move;
     },

@@ -1,30 +1,60 @@
-import { loginUserApi, registerUserApi } from '@api';
+import {
+  getUserApi,
+  loginUserApi,
+  logoutApi,
+  registerUserApi,
+  TLoginData,
+  updateUserApi
+} from '@api';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { TUser } from '@utils-types';
+import { deleteCookie, setCookie } from '../../utils/cookie';
 
 export interface UserState {
   isAuth: boolean;
   isLoading: boolean;
-  profile: TUser | null;
+  profile: TUser;
+  request: boolean;
   error: string | null;
 }
 
 const initialState: UserState = {
   isAuth: false,
   isLoading: false,
-  profile: null,
+  profile: {
+    email: '',
+    name: ''
+  },
+  request: false,
   error: null
 };
 
-const registerUser = createAsyncThunk('user/register', registerUserApi);
-const loginUser = createAsyncThunk('user/login', loginUserApi);
+export const registerUser = createAsyncThunk('user/register', registerUserApi);
+export const userProfileUser = createAsyncThunk('user/getUser', getUserApi);
+export const loginUser = createAsyncThunk(
+  'user/login',
+  async function (loginData: TLoginData) {
+    const data = await loginUserApi(loginData);
+    setCookie('accessToken', data.accessToken);
+    localStorage.setItem('refreshToken', data.refreshToken);
+    return data;
+  }
+);
+export const logOut = createAsyncThunk('user/logout', async function () {
+  logoutApi().then(() => {
+    localStorage.clear();
+    deleteCookie('accessToken');
+    localStorage.removeItem('refreshToken');
+  });
+});
+export const userUpdate = createAsyncThunk('user/update', updateUserApi);
 
 export const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
     logOutUser: (state) => {
-      state.profile = null;
+      state.profile = { email: '', name: '' };
       state.isAuth = false;
     }
   },
@@ -33,17 +63,67 @@ export const userSlice = createSlice({
     getUser: (state) => state.profile
   },
   extraReducers: (builder) => {
-    builder.addCase(registerUser.pending, (state) => {
-      state.isLoading = true;
-      state.error = null;
-    });
-    builder.addCase(registerUser.rejected, (state) => {
+    builder.addCase(loginUser.pending, (state) => {
+      state.request = true;
       state.isAuth = false;
-    });
-    builder.addCase(registerUser.fulfilled, (state, action) => {
-      state.isAuth = true;
-      state.profile = action.payload.user;
-    });
+    }),
+      builder.addCase(loginUser.fulfilled, (state, action) => {
+        state.request = false;
+        state.isAuth = true;
+        state.profile = action.payload.user;
+      }),
+      builder.addCase(loginUser.rejected, (state, action) => {
+        state.request = false;
+        state.isAuth = false;
+      });
+    builder.addCase(userProfileUser.pending, (state) => {
+      state.request = true;
+      state.isAuth = false;
+    }),
+      builder.addCase(userProfileUser.fulfilled, (state, action) => {
+        state.request = false;
+        state.isAuth = true;
+        state.profile = action.payload.user;
+      }),
+      builder.addCase(userProfileUser.rejected, (state, action) => {
+        state.request = false;
+        state.isAuth = false;
+      });
+    builder.addCase(registerUser.pending, (state) => {
+      state.request = true;
+      state.isAuth = false;
+    }),
+      builder.addCase(registerUser.fulfilled, (state, action) => {
+        state.request = false;
+        state.isAuth = true;
+        state.profile = action.payload.user;
+      }),
+      builder.addCase(registerUser.rejected, (state, action) => {
+        state.request = false;
+        state.isAuth = false;
+      });
+    builder.addCase(logOut.pending, (state) => {
+      state.request = true;
+    }),
+      builder.addCase(logOut.fulfilled, (state) => {
+        state.request = false;
+        state.isAuth = true;
+      }),
+      builder.addCase(logOut.rejected, (state, action) => {
+        state.request = false;
+        state.isAuth = false;
+      });
+    builder.addCase(userUpdate.pending, (state) => {
+      state.request = true;
+    }),
+      builder.addCase(userUpdate.fulfilled, (state, action) => {
+        state.request = false;
+        state.isAuth = true;
+        state.profile = action.payload.user;
+      }),
+      builder.addCase(userUpdate.rejected, (state, action) => {
+        state.request = false;
+      });
   }
 });
 
