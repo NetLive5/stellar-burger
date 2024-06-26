@@ -12,7 +12,7 @@ export const Feed: FC = () => {
 
   useEffect(() => {
     dispatch(feedsApi());
-  }, [dispatch]);
+  }, []);
 
   if (!orders.length) {
     return <Preloader />;
