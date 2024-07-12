@@ -45,6 +45,7 @@ export const logOut = createAsyncThunk('user/logout', async function () {
     localStorage.clear();
     deleteCookie('accessToken');
     localStorage.removeItem('refreshToken');
+    window.location.reload();
   });
 });
 export const userUpdate = createAsyncThunk('user/update', updateUserApi);

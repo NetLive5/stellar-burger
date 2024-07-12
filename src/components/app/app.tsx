@@ -16,7 +16,7 @@ import styles from './app.module.css';
 import { AppHeader, Modal, OrderInfo, IngredientDetails } from '@components';
 import { useDispatch } from '../../services/store';
 import { ingredientApi } from '../../services/slices/BurgerSlice';
-import { ProtectedRoute } from '../../services/ProtectedRoute';
+import { ProtectedRoute } from '../protected-route/ProtectedRoute';
 import { userProfileUser } from '../../services/slices/AuthSlice';
 
 const RouteApp = () => {
