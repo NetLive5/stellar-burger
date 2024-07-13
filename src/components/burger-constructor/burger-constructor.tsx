@@ -14,14 +14,13 @@ import {
   getRequest
 } from '../../services/slices/OrderSlice';
 import { useNavigate } from 'react-router-dom';
-import { getUser } from '../../services/slices/AuthSlice';
+import { getIsAuth } from '../../services/slices/AuthSlice';
 
 export const BurgerConstructor: FC = () => {
   /** TODO: взять переменные constructorItems, orderRequest и orderModalData из стора */
   const constructorItems = useSelector(getConstructorItems);
   const orderRequest = useSelector(getIsLoading);
-  const orderLo = useSelector(getRequest);
-  const user = useSelector(getUser);
+  const user = useSelector(getIsAuth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
