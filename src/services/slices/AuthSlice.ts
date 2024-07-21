@@ -5,20 +5,20 @@ import {
   registerUserApi,
   TLoginData,
   updateUserApi
-} from '@api';
+} from '../../utils/burger-api';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { TUser } from '@utils-types';
 import { deleteCookie, setCookie } from '../../utils/cookie';
 
-export interface UserState {
+interface UserState {
   isAuth: boolean;
   isLoading: boolean;
   profile: TUser;
   request: boolean;
-  error: string | null;
+  error: string | undefined;
 }
 
-const initialState: UserState = {
+export const initialState: UserState = {
   isAuth: false,
   isLoading: false,
   profile: {
@@ -26,7 +26,7 @@ const initialState: UserState = {
     name: ''
   },
   request: false,
-  error: null
+  error: undefined
 };
 
 export const registerUser = createAsyncThunk('user/register', registerUserApi);
@@ -76,6 +76,7 @@ export const userSlice = createSlice({
       builder.addCase(loginUser.rejected, (state, action) => {
         state.request = false;
         state.isAuth = false;
+        state.error = action.error.message;
       });
     builder.addCase(userProfileUser.pending, (state) => {
       state.request = true;
@@ -89,6 +90,7 @@ export const userSlice = createSlice({
       builder.addCase(userProfileUser.rejected, (state, action) => {
         state.request = false;
         state.isAuth = false;
+        state.error = action.error.message;
       });
     builder.addCase(registerUser.pending, (state) => {
       state.request = true;
@@ -102,6 +104,7 @@ export const userSlice = createSlice({
       builder.addCase(registerUser.rejected, (state, action) => {
         state.request = false;
         state.isAuth = false;
+        state.error = action.error.message;
       });
     builder.addCase(logOut.pending, (state) => {
       state.request = true;
@@ -113,6 +116,7 @@ export const userSlice = createSlice({
       builder.addCase(logOut.rejected, (state, action) => {
         state.request = false;
         state.isAuth = false;
+        state.error = action.error.message;
       });
     builder.addCase(userUpdate.pending, (state) => {
       state.request = true;
@@ -124,6 +128,7 @@ export const userSlice = createSlice({
       }),
       builder.addCase(userUpdate.rejected, (state, action) => {
         state.request = false;
+        state.error = action.error.message;
       });
   }
 });
