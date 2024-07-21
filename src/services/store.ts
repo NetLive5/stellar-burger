@@ -11,7 +11,7 @@ import { user } from './slices/AuthSlice';
 import { feed } from './slices/FeedSlice';
 import { order } from './slices/OrderSlice';
 
-const rootReducer = combineReducers({
+export const rootReducer = combineReducers({
   // Заменить на импорт настоящего редьюсера
   burgerSlice: constructorBurger,
   user: user,

@@ -1,7 +1,12 @@
-import { PayloadAction, createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import {
+  PayloadAction,
+  createSlice,
+  createAsyncThunk,
+  nanoid
+} from '@reduxjs/toolkit';
 import { TIngredient, TConstructorIngredient } from '@utils-types';
-import { nanoid } from 'nanoid';
-import { getIngredientsApi } from '@api';
+
+import { getIngredientsApi } from '../../utils/burger-api';
 
 export type TConstructorBurgerState = {
   ingredients: TIngredient[];
@@ -12,7 +17,7 @@ export type TConstructorBurgerState = {
   };
 };
 
-const initialState: TConstructorBurgerState = {
+export const initialState: TConstructorBurgerState = {
   ingredients: [],
   isLoading: false,
   constructorItems: {

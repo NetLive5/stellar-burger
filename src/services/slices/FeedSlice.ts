@@ -1,4 +1,4 @@
-import { getFeedsApi } from '@api';
+import { getFeedsApi } from '../../utils/burger-api';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { TOrder } from '@utils-types';
 
@@ -9,7 +9,7 @@ export type FeedState = {
   isLoading: boolean;
 };
 
-const initialState: FeedState = {
+export const initialState: FeedState = {
   feeds: [],
   todayTotal: 0,
   total: 0,
